@@ -2,7 +2,7 @@
 
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy]
-  permits :screen_name, :status
+  permits :name, :screen_name, :status
 
   # GET /accounts
   def index

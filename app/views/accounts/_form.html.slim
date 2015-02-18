@@ -2,6 +2,7 @@
   = f.error_notification
 
   .form-inputs
+    = f.input :name
     = f.input :screen_name
     = f.input :status, collection: Account.statuses.keys, prompt: "Select a status"
 
