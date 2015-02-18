@@ -9,6 +9,7 @@ table class="table tablesorter"
       th Followers
       th Retweets 
       th Favorites
+      th Updated
       th
       th
 
@@ -21,6 +22,7 @@ table class="table tablesorter"
         td = account.followers_count
         td = account.retweet_count
         td = account.favorite_count
+        td = account.updated_at.strftime("%m/%d %H:%M")
         td = link_to 'Show', account, class: 'btn btn-info'
         td = link_to 'Edit', edit_account_path(account), class: 'btn btn-default'
 
