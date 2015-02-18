@@ -27,9 +27,6 @@ class Account < ActiveRecord::Base
   }
 
   def update_history
-    last_history = histories.last
-    return if last_history && last_history.created_at > Account.count.minutes.ago
-    
     user = get_user 
     timeline = get_user_timeline
     
@@ -45,6 +42,8 @@ class Account < ActiveRecord::Base
       retweet_count:   r_count / timeline.count,
       favorite_count:  f_count / timeline.count
     )
+    self.touch
+    self.save
   end
 
   private
