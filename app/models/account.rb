@@ -28,10 +28,12 @@ class Account < ActiveRecord::Base
   }
 
   def update_history
-    user = get_user 
+    self.touch
+    self.save
+    user = get_user
     timeline = get_user_timeline
     return if !user || !timeline
-    
+
     r_count = 0
     f_count = 0
     timeline.each do |tweet|
@@ -44,8 +46,6 @@ class Account < ActiveRecord::Base
       retweet_count:   r_count / timeline.count,
       favorite_count:  f_count / timeline.count
     )
-    self.touch
-    self.save
   end
 
   private
