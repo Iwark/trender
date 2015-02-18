@@ -26,18 +26,6 @@ class Account < ActiveRecord::Base
     where(status: statuses)
   }
 
-  def followers_count
-    histories.count > 0 ? histories.last.followers_count : 0
-  end
-
-  def retweets_count
-    histories.count > 0 ? histories.last.retweet_count : 0
-  end
-
-  def favorites_count
-    histories.count > 0 ? histories.last.favorite_count : 0
-  end
-
   def update_history
     last_history = histories.last
     return if last_history && last_history.created_at > Account.count.minutes.ago
