@@ -30,6 +30,7 @@ class Account < ActiveRecord::Base
   def update_history
     user = get_user 
     timeline = get_user_timeline
+    return if !user || !timeline
     
     r_count = 0
     f_count = 0
@@ -86,6 +87,10 @@ class Account < ActiveRecord::Base
       error_log(e)
     end
     user_timeline
+  end
+
+  def error_log(e)
+    $stderr.puts "[ERROR] #{DateTime.now.strftime('%m/%d %H:%M')} #{screen_name}: #{e}"
   end
 
 end
