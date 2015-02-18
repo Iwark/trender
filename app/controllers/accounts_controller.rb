@@ -11,6 +11,18 @@ class AccountsController < ApplicationController
 
   # GET /accounts/1
   def show
+    @followers_count_data = {}
+    @account.histories.where(History.arel_table[:created_at].gt(7.days.ago)).group(:created_at).sum(:followers_count).each do |k, v|
+      @followers_count_data[k] = v
+    end
+    @retweet_count_data = {}
+    @account.histories.where(History.arel_table[:created_at].gt(7.days.ago)).group(:created_at).sum(:retweet_count).each do |k, v|
+      @retweet_count_data[k] = v
+    end
+    @favorite_count_data = {}
+    @account.histories.where(History.arel_table[:created_at].gt(7.days.ago)).group(:created_at).sum(:favorite_count).each do |k, v|
+      @favorite_count_data[k] = v
+    end
   end
 
   # GET /accounts/new

@@ -1,8 +1,6 @@
 p#notice = notice
 
-p
-  strong Screen name:
-  = @account.screen_name
+h2 = @account.screen_name
 p
   strong Status:
   = @account.status
@@ -10,3 +8,18 @@ p
 = link_to 'Edit', edit_account_path(@account)
 '|
 = link_to 'Back', accounts_path
+
+h3 Followers
+
+.followers_count.chart
+  = line_chart @followers_count_data, library: {html:'<div id="%{id}" style="width: 100%; height: 300px;">Loading...</div>'}
+
+h3 Retweets
+
+.retweet_count.chart
+  = line_chart @retweet_count_data, library: {html:'<div id="%{id}" style="width: 100%; height: 300px;">Loading...</div>'}
+
+h3 Favorites
+
+.favorite_count.chart
+  = line_chart @favorite_count_data, library: {html:'<div id="%{id}" style="width: 100%; height: 300px;">Loading...</div>'}
