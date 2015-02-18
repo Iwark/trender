@@ -18,3 +18,12 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+env :PATH, ENV['PATH']
+
+set :output, "log/crontab.log"
+set :environment, :production
+
+every 3.minutes do
+  rake "account:update_history"
+end

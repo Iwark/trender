@@ -45,6 +45,9 @@ gem 'settingslogic'
 gem 'whenever', require: false
 # Presenter Layer Helper
 gem 'active_decorator'
+
+gem 'twitter'
+
 group :development do
   gem 'html2slim'
   # N+1問題の検出

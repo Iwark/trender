@@ -1,0 +1,9 @@
+= simple_form_for(@account) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :screen_name
+    = f.input :status, collection: Account.statuses.keys, prompt: "Select a status"
+
+  .form-actions
+    = f.button :submit

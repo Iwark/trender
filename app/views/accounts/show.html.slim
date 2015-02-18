@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Screen name:
+  = @account.screen_name
+p
+  strong Status:
+  = @account.status
+
+= link_to 'Edit', edit_account_path(@account)
+'|
+= link_to 'Back', accounts_path
