@@ -1,11 +1,13 @@
 h1 Listing accounts
 
-table
+table class="table"
   thead
     tr
       th Screen name
       th Status
-      th
+      th Followers
+      th Retweets 
+      th Favorites
       th
       th
 
@@ -14,10 +16,12 @@ table
       tr
         td = account.screen_name
         td = account.status
-        td = link_to 'Show', account
-        td = link_to 'Edit', edit_account_path(account)
-        td = link_to 'Destroy', account, data: {:confirm => 'Are you sure?'}, :method => :delete
+        td = account.followers_count
+        td = account.retweet_count
+        td = account.favorite_count
+        td = link_to 'Show', account, class: 'btn btn-info'
+        td = link_to 'Edit', edit_account_path(account), class: 'btn btn-default'
 
 br
 
-= link_to 'New Account', new_account_path
+= link_to 'New Account', new_account_path, class: 'btn btn-primary'
