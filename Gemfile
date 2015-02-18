@@ -48,6 +48,8 @@ gem 'active_decorator'
 
 gem 'twitter'
 gem 'chartkick'
+gem 'capistrano-rails-console'
+gem 'jquery-tablesorter'
 
 group :development do
   gem 'html2slim'
