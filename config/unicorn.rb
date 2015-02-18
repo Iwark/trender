@@ -11,7 +11,7 @@
     ENV['BUNDLE_GEMFILE'] = File.expand_path('Gemfile', ENV['RAILS_ROOT'])
   end
 
-  preload_app true
+  preload_app false
 
   before_fork do |server, worker|
     defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
