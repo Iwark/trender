@@ -40,10 +40,10 @@ class Account < ActiveRecord::Base
     where(arel_table[:last_followers_count].lt(followers_lt)) if followers_lt.present?
   }
   scope :narrow_retweets, -> retweets_gt {
-    where(arel_table[:last_retweet_count].lt(retweets_gt)) if retweets_gt.present?
+    where(arel_table[:last_retweet_count].gt(retweets_gt)) if retweets_gt.present?
   }
   scope :narrow_favorites, -> favorites_gt {
-    where(arel_table[:last_favorite_count].lt(favorites_gt)) if favorites_gt.present?
+    where(arel_table[:last_favorite_count].gt(favorites_gt)) if favorites_gt.present?
   }
 
   # アカウントデータの更新
