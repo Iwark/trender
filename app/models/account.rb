@@ -46,7 +46,10 @@ class Account < ActiveRecord::Base
     where(arel_table[:last_favorite_count].lt(favorites_gt)) if favorites_gt.present?
   }
 
-  def update_history
+  # アカウントデータの更新
+  #
+  # @return [nil]
+  def update_account_data
     user = get_user
     timeline = get_user_timeline
     if !user || !timeline
@@ -54,31 +57,26 @@ class Account < ActiveRecord::Base
       return
     end
 
-    t_count = 0
-    r_count = 0
-    f_count = 0
-    timeline.each do |tweet|
-      if !tweet.to_h[:retweeted_status] && !tweet.to_h[:in_reply_to_status_id]
-        t_count += 1
-        r_count += tweet.retweet_count
-        f_count += tweet.favorite_count
-      end
-    end
-    if t_count > 0
+    self.last_followers_count = user.followers_count
+
+    if timeline.length > 0
+      self.last_retweet_count  = timeline.inject(0){|sum, t| sum + t.retweet_count } / timeline.length
+      self.last_favorite_count = timeline.inject(0){|sum, t| sum + t.favorite_count} / timeline.length
+
+      # アカウント履歴の更新
       histories.create(
         followers_count: user.followers_count,
-        retweet_count:   (t_count > 0 ? r_count / t_count : 0),
-        favorite_count:  (t_count > 0 ? f_count / t_count : 0)
+        retweet_count:   retweets_sum  / timeline.length,
+        favorite_count:  favorites_sum / timeline.length
       )
-    end
-    self.last_followers_count = user.followers_count
-    if t_count > 0
-      self.last_retweet_count  = r_count / t_count
-      self.last_favorite_count = f_count / t_count
     end
     self.save
   end
 
+  # アカウントの履歴をCSVで出力する
+  #
+  # @param [Fixnum] to 何日前までのデータを出力するか
+  # @return [CSV] csv 出力するCSVデータ
   def self.to_csv(to=7)
     CSV.generate do |csv|
       row1 = ['Name', 'Screen name', 'Status', 'Last followers']
@@ -149,13 +147,13 @@ class Account < ActiveRecord::Base
     user
   end
 
-  # ユーザーのタイムラインの取得
+  # ユーザーの直近50ツイートのうち、リツイートやリプライは除くものを取得。
   #
   # @param [String] target ターゲットアカウントのscreen_name
   # @return [Array<Twitter::Tweet>] user_timeline ユーザーのタイムライン
   def get_user_timeline(target=screen_name)
     begin
-      user_timeline = client.user_timeline(target)
+      user_timeline = client.user_timeline(target, exclude_replies: true, trim_user: true, include_rts: false, count:50)
     rescue => e
       error_log(e)
     end
