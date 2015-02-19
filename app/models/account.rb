@@ -15,8 +15,8 @@ class Account < ActiveRecord::Base
   has_many :histories
 
   # ステータス
-  enum status: { on: 10, off: 20, deleted: 40 }
-  validates :status, inclusion: { in: %w(on off deleted) }
+  enum status: { on: 10, off: 20, error: 30, deleted: 40 }
+  validates :status, inclusion: { in: %w(on off error deleted) }
 
   # ステータスで絞り込み
   scope :by_status, -> status {
@@ -28,11 +28,12 @@ class Account < ActiveRecord::Base
   }
 
   def update_history
-    self.touch
-    self.save
     user = get_user
     timeline = get_user_timeline
-    return if !user || !timeline
+    if !user || !timeline
+      self.update(status: :error)
+      return
+    end
 
     r_count = 0
     f_count = 0
@@ -46,6 +47,8 @@ class Account < ActiveRecord::Base
       retweet_count:   r_count / timeline.count,
       favorite_count:  f_count / timeline.count
     )
+    self.touch
+    self.save
   end
 
   private

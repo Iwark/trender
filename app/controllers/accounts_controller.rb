@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
 
   # GET /accounts
   def index
-    @accounts = Account.by_statuses([:on, :off])
+    @accounts = Account.by_statuses([:on, :off, :error])
   end
 
   # GET /accounts/1
