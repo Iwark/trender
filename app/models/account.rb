@@ -54,23 +54,29 @@ class Account < ActiveRecord::Base
       return
     end
 
+    t_count = 0
     r_count = 0
     f_count = 0
     timeline.each do |tweet|
-      r_count += tweet.retweet_count
-      f_count += tweet.favorite_count
+      if !tweet.to_h[:retweeted_status] && !tweet.to_h[:in_reply_to_status_id]
+        t_count += 1
+        r_count += tweet.retweet_count
+        f_count += tweet.favorite_count
+      end
     end
-
-    histories.create(
-      followers_count: user.followers_count,
-      retweet_count:   r_count / timeline.count,
-      favorite_count:  f_count / timeline.count
-    )
-    self.update(
-      last_followers_count: user.followers_count,
-      last_retweet_count:   r_count / timeline.count,
-      last_favorite_count:  f_count / timeline.count
-    )
+    if t_count > 0
+      histories.create(
+        followers_count: user.followers_count,
+        retweet_count:   (t_count > 0 ? r_count / t_count : 0),
+        favorite_count:  (t_count > 0 ? f_count / t_count : 0)
+      )
+    end
+    self.last_followers_count = user.followers_count
+    if t_count > 0
+      self.last_retweet_count  = r_count / t_count
+      self.last_favorite_count = f_count / t_count
+    end
+    self.save
   end
 
   private
