@@ -7,6 +7,14 @@ class AccountsController < ApplicationController
   # GET /accounts
   def index(followers_lt=nil, retweets_gt=nil, favorites_gt=nil)
     @accounts = Account.by_statuses([:on, :off, :error]).narrow(followers_lt, retweets_gt, favorites_gt)
+    respond_to do |format|
+      format.html
+      format.csv { 
+        send_data Account.to_csv.encode(Encoding::CP932, invalid: :replace, undef: :replace),
+          filename: "accounts#{DateTime.now.strftime("%m%d")}.csv",
+          type: 'text/csv; charset=shift_jis'
+      }
+    end
   end
 
   # GET /accounts/1

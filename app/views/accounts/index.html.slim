@@ -13,6 +13,8 @@ h1 Listing accounts
   .form-actions style="margin-top: 10px;"
     = button_tag '絞り込む', class: 'btn btn-primary'
 
+= link_to 'データの出力', accounts_path(format: :csv), class: 'btn btn-primray'
+
 table class="table tablesorter" style="margin-top: 10px;"
   thead
     tr

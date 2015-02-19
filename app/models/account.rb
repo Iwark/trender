@@ -79,6 +79,48 @@ class Account < ActiveRecord::Base
     self.save
   end
 
+  def self.to_csv(to=7)
+    CSV.generate do |csv|
+      row1 = ['Name', 'Screen name', 'Status', 'Last followers']
+      row1 += Array.new(to-1, '')
+      row1 << 'Last retweets'
+      row1 += Array.new(to-1, '')
+      row1 << 'Last favorites'
+      row1 += Array.new(to-1, '')
+      csv  << row1
+      row2 = Array.new(3, '')
+      (0...3).each do |i|
+        (0...to).each do |t|
+          row2 << t.days.ago.strftime("%m/%d")
+        end
+      end
+      csv << row2
+
+      followers_histories = {}
+      retweet_histories = {}
+      favorite_histories = {}
+      (0...to).each do |i|
+        date = i.days.ago.to_date
+        followers_histories[i] = History.by_date(date).group(:account_id).average(:followers_count)
+        retweet_histories[i]   = History.by_date(date).group(:account_id).average(:retweet_count)
+        favorite_histories[i]  = History.by_date(date).group(:account_id).average(:favorite_count)
+      end
+      @accounts = Account.by_statuses([:on, :off, :error]).each do |a|
+        adata = [a.name, a.screen_name, a.status]
+        (0...to).each do |i|
+          adata << followers_histories[i][a.id] ? followers_histories[i][a.id].to_i : 0
+        end
+        (0...to).each do |i|
+          adata << retweet_histories[i][a.id] ? retweet_histories[i][a.id].to_i : 0
+        end
+        (0...to).each do |i|
+          adata << favorite_histories[i][a.id] ? favorite_histories[i][a.id].to_i : 0
+        end
+        csv << adata
+      end
+    end
+  end
+
   private
 
   # クライアントの取得

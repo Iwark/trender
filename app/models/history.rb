@@ -13,4 +13,8 @@
 
 class History < ActiveRecord::Base
   belongs_to :account
+  scope :by_date, -> date {
+    where(arel_table[:created_at].gt(date)).
+    where(arel_table[:created_at].lt(date+1))
+  }
 end
