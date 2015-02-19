@@ -1,14 +1,27 @@
 h1 Listing accounts
 
-table class="table tablesorter"
+= form_tag accounts_path, method: :get
+  .form-inputs
+    = label_tag :followers_lt, "Followers < "
+    = text_field_tag :followers_lt, params[:followers_lt], style: 'margin-left: 10px;'
+  .form-inputs style='margin-top: 5px;'
+    = label_tag :retweets_gt, "Retweets > "
+    = text_field_tag :retweets_gt, params[:retweets_gt], style: 'margin-left: 10px;'
+  .form-inputs style='margin-top: 5px;'
+    = label_tag :favorites_gt, "Favorites > "
+    = text_field_tag :favorites_gt, params[:favorites_gt], style: 'margin-left: 10px;'
+  .form-actions style="margin-top: 10px;"
+    = button_tag '絞り込む', class: 'btn btn-primary'
+
+table class="table tablesorter" style="margin-top: 10px;"
   thead
     tr
       th Name
       th Screen name
       th Status
-      th Followers
-      th Retweets 
-      th Favorites
+      th Last followers
+      th Last retweets 
+      th Last favorites
       th Updated
       th
       th
@@ -19,9 +32,9 @@ table class="table tablesorter"
         td = account.name
         td = account.linked_screen_name
         td = account.colored_status
-        td = account.followers_count
-        td = account.retweet_count
-        td = account.favorite_count
+        td = account.last_followers_count
+        td = account.last_retweet_count
+        td = account.last_favorite_count
         td = account.updated_at.strftime("%m/%d %H:%M")
         td = link_to 'Show', account, class: 'btn btn-info'
         td = link_to 'Edit', edit_account_path(account), class: 'btn btn-default'

@@ -2,12 +2,15 @@
 #
 # Table name: accounts
 #
-#  id          :integer          not null, primary key
-#  screen_name :string(255)
-#  status      :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  name        :string(255)
+#  id                   :integer          not null, primary key
+#  screen_name          :string(255)
+#  status               :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  name                 :string(255)
+#  last_followers_count :integer          default("0")
+#  last_retweet_count   :integer          default("0")
+#  last_favorite_count  :integer          default("0")
 #
 
 class Account < ActiveRecord::Base
@@ -25,6 +28,22 @@ class Account < ActiveRecord::Base
   scope :by_statuses, -> statuses {
     statuses.map! {|status| Account.statuses[status] }
     where(status: statuses)
+  }
+
+  # 条件で絞り込み
+  scope :narrow, -> followers_lt, retweets_gt, favorites_gt {
+    narrow_followers(followers_lt).
+    narrow_retweets(retweets_gt).
+    narrow_favorites(favorites_gt)
+  }
+  scope :narrow_followers, -> followers_lt {
+    where(arel_table[:last_followers_count].lt(followers_lt)) if followers_lt.present?
+  }
+  scope :narrow_retweets, -> retweets_gt {
+    where(arel_table[:last_retweet_count].lt(retweets_gt)) if retweets_gt.present?
+  }
+  scope :narrow_favorites, -> favorites_gt {
+    where(arel_table[:last_favorite_count].lt(favorites_gt)) if favorites_gt.present?
   }
 
   def update_history
@@ -47,8 +66,11 @@ class Account < ActiveRecord::Base
       retweet_count:   r_count / timeline.count,
       favorite_count:  f_count / timeline.count
     )
-    self.touch
-    self.save
+    self.update(
+      last_followers_count: user.followers_count,
+      last_retweet_count:   r_count / timeline.count,
+      last_favorite_count:  f_count / timeline.count
+    )
   end
 
   private

@@ -5,8 +5,8 @@ class AccountsController < ApplicationController
   permits :name, :screen_name, :status
 
   # GET /accounts
-  def index
-    @accounts = Account.by_statuses([:on, :off, :error])
+  def index(followers_lt=nil, retweets_gt=nil, favorites_gt=nil)
+    @accounts = Account.by_statuses([:on, :off, :error]).narrow(followers_lt, retweets_gt, favorites_gt)
   end
 
   # GET /accounts/1
