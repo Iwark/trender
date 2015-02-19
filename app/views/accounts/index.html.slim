@@ -17,7 +17,7 @@ table class="table tablesorter"
     - @accounts.each do |account|
       tr
         td = account.name
-        td = account.screen_name
+        td = account.linked_screen_name
         td = account.colored_status
         td = account.followers_count
         td = account.retweet_count
