@@ -66,8 +66,8 @@ class Account < ActiveRecord::Base
       # アカウント履歴の更新
       histories.create(
         followers_count: user.followers_count,
-        retweet_count:   retweets_sum  / timeline.length,
-        favorite_count:  favorites_sum / timeline.length
+        retweet_count:   self.last_retweet_count,
+        favorite_count:  self.last_favorite_count
       )
     end
     self.save
