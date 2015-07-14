@@ -49,9 +49,12 @@ class Account < ActiveRecord::Base
   def growth_rate
     history = self.histories.where(History.arel_table[:created_at].gt(7.days.ago)).first
     p = 1.0
-    p = p * self.last_followers_count / history.followers_count
-    p = p * self.last_retweet_count / history.retweet_count
-    p * self.last_favorite_count / history.favorite_count
+    if history
+      p = p * self.last_followers_count / history.followers_count
+      p = p * self.last_retweet_count / history.retweet_count
+      p = p * self.last_favorite_count / history.favorite_count
+    end
+    p
   end
 
   # アカウントデータの更新
