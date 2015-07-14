@@ -50,9 +50,13 @@ class Account < ActiveRecord::Base
     history = self.histories.where(History.arel_table[:created_at].gt(7.days.ago)).first
     p = 1.0
     if history
-      p = p * self.last_followers_count / history.followers_count
-      p = p * self.last_retweet_count / history.retweet_count
-      p = p * self.last_favorite_count / history.favorite_count
+      if history.followers_count == 0 || history.retweet_count == 0 || history.favorite_count == 0
+        p = 0
+      else
+        p = p * self.last_followers_count / history.followers_count
+        p = p * self.last_retweet_count / history.retweet_count
+        p = p * self.last_favorite_count / history.favorite_count
+      end
     end
     p
   end
