@@ -24,6 +24,7 @@ table class="table tablesorter" style="margin-top: 10px;"
       th Last followers
       th Last retweets 
       th Last favorites
+      th Growth Rate
       th Updated
       th
       th
@@ -37,6 +38,7 @@ table class="table tablesorter" style="margin-top: 10px;"
         td = account.last_followers_count
         td = account.last_retweet_count
         td = account.last_favorite_count
+        td = account.growth_rate
         td = account.updated_at.strftime("%m/%d %H:%M")
         td = link_to 'Show', account, class: 'btn btn-info'
         td = link_to 'Edit', edit_account_path(account), class: 'btn btn-default'
