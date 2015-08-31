@@ -62,7 +62,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
-  gem 'capistrano3-unicorn'
+  gem 'sepastian-capistrano3-unicorn', git: 'git@github.com:Iwark/capistrano-unicorn.git', require: false
 end
 group :development, :test do
   gem 'annotate'
