@@ -14,26 +14,25 @@
 ActiveRecord::Schema.define(version: 20150219013426) do
 
   create_table "accounts", force: :cascade do |t|
-    t.string   "screen_name",          limit: 255
-    t.integer  "status",               limit: 4
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.string   "name",                 limit: 255
-    t.integer  "last_followers_count", limit: 4,   default: 0
-    t.integer  "last_retweet_count",   limit: 4,   default: 0
-    t.integer  "last_favorite_count",  limit: 4,   default: 0
+    t.string   "screen_name"
+    t.integer  "status"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "name"
+    t.integer  "last_followers_count", default: 0
+    t.integer  "last_retweet_count",   default: 0
+    t.integer  "last_favorite_count",  default: 0
   end
 
   create_table "histories", force: :cascade do |t|
-    t.integer  "account_id",      limit: 4
-    t.integer  "followers_count", limit: 4
-    t.integer  "retweet_count",   limit: 4
-    t.integer  "favorite_count",  limit: 4
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "account_id"
+    t.integer  "followers_count"
+    t.integer  "retweet_count"
+    t.integer  "favorite_count"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
-  add_index "histories", ["account_id"], name: "index_histories_on_account_id", using: :btree
+  add_index "histories", ["account_id"], name: "index_histories_on_account_id"
 
-  add_foreign_key "histories", "accounts"
 end

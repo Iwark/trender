@@ -1,6 +1,6 @@
-role :app, %w{trender}
-role :web, %w{trender}
-role :db,  %w{trender}
+role :app, %w{hct-toolbox}
+role :web, %w{hct-toolbox}
+role :db,  %w{hct-toolbox}
 
 set :stage, :production
 set :rails_env, :production

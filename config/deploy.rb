@@ -3,7 +3,7 @@ set :repo_url, 'git@github.com:Iwark/trender.git'
 
 set :scm, :git
 
-set :rbenv_ruby, '2.2.0'
+set :rbenv_ruby, '2.3.0'
 
 # Default value for :linked_files is []
 set :linked_files, %w{config/secrets.yml}
