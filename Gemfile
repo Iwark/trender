@@ -59,7 +59,7 @@ group :development do
   # Rack Profiler
   # gem 'rack-mini-profiler'
   # Deploy
-  gem 'capistrano', '~> 3.2.1'
+  gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
