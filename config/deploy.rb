@@ -19,7 +19,6 @@ set :bundle_env_variables, { 'NOKOGIRI_USE_SYSTEM_LIBRARIES' => 1 }
 # set :linked_dirs, (fetch(:linked_dirs) + ['tmp/pids'])
 
 set :unicorn_rack_env, "production"
-set :unicorn_config_path, 'config/unicorn.rb'
 
 namespace :deploy do
 

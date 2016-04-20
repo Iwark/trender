@@ -4,8 +4,8 @@ working_directory "#{app_path}/current"
 listen "#{app_path}/shared/tmp/sockets/unicorn.sock", :backlog => 64
 pid "#{app_path}/shared/tmp/pids/unicorn.pid"
 
-stderr_path File.expand_path('unicorn.log', File.dirname(__FILE__) + '/../../log')
-stdout_path File.expand_path('unicorn.log', File.dirname(__FILE__) + '/../../log')
+stderr_path File.expand_path('unicorn.log', File.dirname(__FILE__) + '/../log')
+stdout_path File.expand_path('unicorn.log', File.dirname(__FILE__) + '/../log')
 
 worker_processes 2
 
