@@ -9,12 +9,12 @@ default: &default
 
 development:
   <<: *default
-  database: trender_development
+  database: db/development.sqlite3
 
 test:
   <<: *default
-  database: trender_test
+  database: db/test.sqlite3
 
 production:
   <<: *default
-  database: trender_production
+  database: db/production.sqlite3
